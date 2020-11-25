@@ -1,0 +1,39 @@
+Parameters:
+  paramBucketName:
+    Type: String
+    Description: Bucket Name
+    
+Resources:
+  S3User:
+    Type: AWS::IAM::User
+    Properties:
+      Policies:
+        - PolicyName: bucket-access
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+            - Effect: Allow
+              Action:
+              - s3:GetObject
+              - s3:ListBucket
+              Resource:
+                - !Sub arn:aws:s3:::${paramBucketName}
+                - !Sub arn:aws:s3:::${paramBucketName}/*
+
+  S3UserAccessKey:
+    Type: AWS::IAM::AccessKey
+    Properties:
+      UserName: !Ref S3User
+
+
+Outputs:
+  User:
+    Value: !Ref S3User
+    
+  AccessKey:
+    Value: !Ref 'S3UserAccessKey'
+    Description: AWSAccessKeyId of new user
+    
+  SecretKey:
+    Value: !GetAtt [S3UserAccessKey, SecretAccessKey]
+    Description: AWSSecretAccessKey of new user

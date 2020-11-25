@@ -1,2 +1,4 @@
 # aws-templates
-Templates AWS CloudFormation
+Templates de AWS CloudFormation
+
+Podemos encontrar algunos templates para creacion de staks de cloudformation para automatizar la infraestructuta

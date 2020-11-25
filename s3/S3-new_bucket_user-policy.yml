@@ -1,0 +1,56 @@
+Parameters:
+  paramBucketName:
+    Type: String
+    Description: Bucket Name
+    
+Resources:
+  S3Bucket:
+    Type: 'AWS::S3::Bucket'
+    Properties:
+      AccessControl: BucketOwnerFullControl
+      BucketName: !Ref paramBucketName
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256
+      
+  S3User:
+    Type: AWS::IAM::User
+    Properties:
+      Policies:
+        - PolicyName: bucket-access
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+            - Effect: Allow
+              Action:
+              - s3:GetObject
+              - s3:ListBucket
+              Resource:
+                - !Sub arn:aws:s3:::${S3Bucket}
+                - !Sub arn:aws:s3:::${S3Bucket}/*
+
+  S3UserAccessKey:
+    Type: AWS::IAM::AccessKey
+    Properties:
+      UserName: !Ref S3User
+
+Outputs:
+  BucketName:
+    Value: !Ref 'S3Bucket'
+    Description: Name of the Amazon S3 bucket.
+
+  S3BucketSecureURL:
+    Value: !Join ['', ['https://', !GetAtt [S3Bucket, DomainName]]]
+    Description: Domain Name of the Amazon S3 bucket
+
+  User:
+    Value: !Ref S3User
+    
+  AccessKey:
+    Value: !Ref 'S3UserAccessKey'
+    Description: AWSAccessKeyId of new user
+    
+  SecretKey:
+    Value: !GetAtt [S3UserAccessKey, SecretAccessKey]
+    Description: AWSSecretAccessKey of new user
