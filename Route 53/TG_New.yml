@@ -1,0 +1,32 @@
+---
+Parameters:
+  paramInstanceID:
+    Type: String
+    Description: Instance ID
+  paramVPCId:
+    Type: String
+    Description: VPC ID
+  paramTargetGroup:
+    Type: String
+    Description: Target Name
+  paramPortTarget:
+    Type: String
+    Description: Port Target
+
+Resources:
+  itemName:
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+    Properties: 
+      HealthCheckEnabled: yes
+      HealthCheckPath: /
+      Name: !Ref paramTargetGroup
+      Port: 80
+      Protocol: HTTP
+      Tags: 
+        - Key: Source
+          Value: CFN
+      Targets: 
+        - Id: !Ref paramInstanceID
+          Port: !Ref paramPortTarget
+      TargetType: instance
+      VpcId: !Ref paramVPCId

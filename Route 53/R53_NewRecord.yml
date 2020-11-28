@@ -1,0 +1,30 @@
+---
+Parameters:
+  paramSiteName:
+    Type: String
+    Description: Site URL
+  paramHostedZoneID:
+    Type: String
+    Description: Hosted Zone Id
+  paramELBID:
+    Type: String
+    Description: ELB Canonical Hosted Zone Id
+  paramELBName:
+    Type: String
+    Description: ELB DNS Name
+
+Resources:
+  itemName:
+    Type: AWS::Route53::RecordSetGroup 
+    Properties:
+      HostedZoneId: !Ref paramHostedZoneID
+      Comment: Alta de Record DNS
+      RecordSets:
+        - Name: !Ref paramSiteName
+          Type: A
+          AliasTarget:
+            HostedZoneId: !Ref paramELBID
+            DNSName: !Ref paramELBName
+
+
+          
