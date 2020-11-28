@@ -9,6 +9,9 @@ Parameters:
   paramTargetGroup:
     Type: String
     Description: Target Group ARN
+  paramSiteURL:
+    Type: String
+    Description: Site URL
 
 Resources:
   RuleHTTPListener:
@@ -20,7 +23,7 @@ Resources:
       - 
         Field: "host-header"
         Values: 
-        - "test1.blog.avrcr.com"
+        - !Ref paramSiteURL
       Actions:
       - 
         Order: 1
@@ -42,7 +45,7 @@ Resources:
           - 
             Field: "host-header"
             Values: 
-              - "test1.blog.avrcr.com"
+              - !Ref paramSiteURL
         Actions: 
           - 
             Type: "forward"
