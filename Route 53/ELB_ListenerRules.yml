@@ -17,7 +17,7 @@ Resources:
   RuleHTTPListener:
     Type: AWS::ElasticLoadBalancingV2::ListenerRule
     Properties:
-      Priority: 20
+      Priority: 100
       ListenerArn: !Ref paramHTTPListener
       Conditions:
       - 
@@ -39,7 +39,7 @@ Resources:
   RuleHTTPSListener:
     Type: "AWS::ElasticLoadBalancingV2::ListenerRule"
     Properties:
-        Priority: 20
+        Priority: 100
         ListenerArn: !Ref paramHTTPSListener
         Conditions: 
           - 
